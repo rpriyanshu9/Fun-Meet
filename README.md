@@ -1,6 +1,6 @@
 # daily_baithak
 
-A flutter application as a utility app for daily meetups of college friends.
+A flutter utility app for daily meetups of college friends.
 
 ## Getting Started
 
