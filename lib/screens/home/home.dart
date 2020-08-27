@@ -15,6 +15,17 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    void _showSettingsPanel() {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: Text("Bottom Sheet"),
+            );
+          });
+    }
+
     return StreamProvider<List<Choices>>.value(
       value: DatabaseService().choice,
       child: Scaffold(
@@ -23,6 +34,7 @@ class _HomeState extends State<Home> {
           title: Text('Daily Baithak'),
           actions: <Widget>[
             FlatButton.icon(
+                padding: EdgeInsets.only(right: 0.0),
                 onPressed: () async {
                   await _auth.signOut();
                 },
@@ -33,7 +45,17 @@ class _HomeState extends State<Home> {
                 label: Text(
                   "Logout",
                   style: TextStyle(color: Colors.white),
-                ))
+                )),
+            SizedBox(
+              width: 60.0,
+              child: FlatButton.icon(
+                  onPressed: () => _showSettingsPanel(),
+                  icon: Icon(Icons.settings, color: Colors.white),
+                  label: Text(
+                    "",
+                    style: TextStyle(color: Colors.white),
+                  )),
+            )
           ],
         ),
         body: ChoiceList(),
