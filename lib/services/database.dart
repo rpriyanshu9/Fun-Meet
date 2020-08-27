@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daily_baithak/models/choices.dart';
 
 class DatabaseService {
   //inside here we're gonna have all the methods and properties that we're gonna use to interact with cloud firestore databse
@@ -26,10 +27,26 @@ class DatabaseService {
     });
   }
 
+  //choice list from snapshot
+  // this func cycles through the docs and return list of data rather than instances
+  List<Choices> _choiceListFromSnapShot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Choices(
+        name: doc.data['name'] ?? '',
+        preference: doc.data['preference'] ?? "chai",
+        cig: doc.data['cig'] ?? 'Ultra Mild',
+        no_cig: doc.data['no_cig'] ?? 0,
+        food: doc.data['food'] ?? "parantha",
+        qty_food: doc.data['qty_food'] ?? 1,
+      );
+    }).toList();
+  }
+
   //this is the stream setup
   //every bit of data we get using streams is gonna be a snapshot
-  Stream<QuerySnapshot> get choice {
+  Stream<List<Choices>> get choice {
     // .snapshots is a method of cloud firestore
-    return choicesCollection.snapshots();
+    return choicesCollection.snapshots().map(
+        _choiceListFromSnapShot); //remember changing return type in home.dart too
   }
 }
