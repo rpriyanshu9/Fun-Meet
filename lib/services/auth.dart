@@ -1,9 +1,10 @@
-import 'package:daily_baithak/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
-class AuthService{
+import 'package:daily_baithak/models/user.dart';
+import 'package:daily_baithak/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+class AuthService {
   //instance of firebase authentication
   //this instance will allow us to communicate to firebase auth in the backend
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -50,8 +51,14 @@ class AuthService{
   //register with email and password
   Future registerWithEmailAndPassword(String email, String password) async{
     try{
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user= result.user;
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+
+      //create new doc for the user with uid... this uses the choicesCollection in database.dart
+      await DatabaseService(uid: user.uid).updateUserData(
+          "new user", "chai", "ultra mild", 2, "biryani", 1);
+
       return _privateUserFromFirebaseUser(user);
     }catch(e){
       print(e.toString());
