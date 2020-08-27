@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
+  //inside here we're gonna have all the methods and properties that we're gonna use to interact with cloud firestore databse
+
   final String uid;
 
   DatabaseService({this.uid});
-
-  //inside here we're gonna have all the methods and properties that we're gonna use to interact with cloud firestore databse
 
   //collection reference-reference to particular collection in firestore database
   final CollectionReference choicesCollection =
@@ -24,5 +24,12 @@ class DatabaseService {
       'food': food,
       'qty_food': qty_food,
     });
+  }
+
+  //this is the stream setup
+  //every bit of data we get using streams is gonna be a snapshot
+  Stream<QuerySnapshot> get choice {
+    // .snapshots is a method of cloud firestore
+    return choicesCollection.snapshots();
   }
 }
