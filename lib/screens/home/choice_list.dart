@@ -13,17 +13,15 @@ class _ChoiceListState extends State<ChoiceList> {
   @override
   Widget build(BuildContext context) {
     //accessing data from snpshot stream
-    final choices = Provider.of<List<Choices>>(context);
+    final choices = Provider.of<List<Choices>>(context) ?? [];
     // adding .documents gives us all the documents in the firestore collection
 
     // now we're gonna use listbuilder widget which lists out a list tile for each item in the list
-    if (choices != null) {
-      return ListView.builder(
-          itemCount: choices.length,
-          // index is the index of items in choices list
-          itemBuilder: (context, index) {
-            return ChoiceTile(choice: choices[index]);
-          });
-    }
+    return ListView.builder(
+        itemCount: choices.length,
+        // index is the index of items in choices list
+        itemBuilder: (context, index) {
+          return ChoiceTile(choice: choices[index]);
+        });
   }
 }

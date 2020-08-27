@@ -12,7 +12,7 @@ class SettingsForm extends StatefulWidget {
 
 class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> preference = ['chai', 'coffee', 'cold-drink'];
+  final List<String> preference = ['chai', 'cold-drink'];
   final List<String> cig = ['ultra mild', 'goldflake'];
 
   String _currentName;
@@ -31,7 +31,7 @@ class _SettingsFormState extends State<SettingsForm> {
       //we use the stream builder for listening to streams rather than provider because we need data only..
       //..in this particular widget tree and we wont pass the context to any other widget tree further
       child: StreamBuilder<UserData>(
-          // we getting stream from which func
+        // we getting stream from which func
           stream: DatabaseService(uid: user.uid).userData,
           builder: (context, snapshot) {
             // has data to check if snapshot has data or not
@@ -136,7 +136,19 @@ class _SettingsFormState extends State<SettingsForm> {
                     RaisedButton(
                       child: Text("Update"),
                       color: Colors.greenAccent[100],
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          //this sends the updated data to firestore databse and updates our listview
+                          await DatabaseService(uid: user.uid).updateUserData(
+                              _currentName ?? userData.name,
+                              _currentpreference ?? userData.preference,
+                              _currentCig ?? userData.cig,
+                              _currentNo_cig ?? userData.no_cig,
+                              _currentFood ?? userData.food,
+                              _currentQty ?? userData.qty_food);
+                          Navigator.pop(context);
+                        }
+                      },
                     )
                   ],
                 ),
