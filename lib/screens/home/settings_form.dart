@@ -1,0 +1,150 @@
+import 'package:daily_baithak/models/user.dart';
+import 'package:daily_baithak/services/database.dart';
+import 'package:daily_baithak/shared/constants.dart';
+import 'package:daily_baithak/shared/loading.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class SettingsForm extends StatefulWidget {
+  @override
+  _SettingsFormState createState() => _SettingsFormState();
+}
+
+class _SettingsFormState extends State<SettingsForm> {
+  final _formKey = GlobalKey<FormState>();
+  final List<String> preference = ['chai', 'coffee', 'cold-drink'];
+  final List<String> cig = ['ultra mild', 'goldflake'];
+
+  String _currentName;
+  String _currentpreference;
+  String _currentCig;
+  int _currentNo_cig;
+  String _currentFood;
+  int _currentQty;
+
+  @override
+  Widget build(BuildContext context) {
+    //getting the user that is logged in
+    final user = Provider.of<User>(context);
+
+    return SingleChildScrollView(
+      //we use the stream builder for listening to streams rather than provider because we need data only..
+      //..in this particular widget tree and we wont pass the context to any other widget tree further
+      child: StreamBuilder<UserData>(
+          // we getting stream from which func
+          stream: DatabaseService(uid: user.uid).userData,
+          builder: (context, snapshot) {
+            // has data to check if snapshot has data or not
+            if (snapshot.hasData) {
+              UserData userData = snapshot.data;
+              return Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Update your choices",
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    TextFormField(
+                      initialValue: userData.name,
+                      decoration:
+                          textInputDecoration.copyWith(hintText: "Name"),
+                      validator: (val) =>
+                          val.isEmpty ? 'Please enter a name' : null,
+                      onChanged: (val) => _currentName = val,
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    DropdownButtonFormField(
+                      value: _currentpreference ?? userData.preference,
+                      items: preference.map((String dropDownStringItem) {
+                        return DropdownMenuItem(
+                          value: dropDownStringItem,
+                          child: Text(dropDownStringItem),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _currentpreference = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    DropdownButtonFormField(
+                      value: _currentCig ?? userData.cig,
+                      items: cig.map((String dropDownStringItem) {
+                        return DropdownMenuItem(
+                          value: dropDownStringItem,
+                          child: Text(dropDownStringItem),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _currentCig = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Slider(
+                        label: _currentNo_cig != null
+                            ? "$_currentNo_cig"
+                            : "${userData.no_cig}",
+                        value: (_currentNo_cig ?? userData.no_cig).toDouble(),
+                        activeColor: Colors.red[_currentNo_cig != null
+                            ? _currentNo_cig * 100
+                            : userData.no_cig * 100],
+                        inactiveColor: Colors.red[_currentNo_cig != null
+                            ? _currentNo_cig * 100
+                            : userData.no_cig * 100],
+                        min: 0.0,
+                        max: 5.0,
+                        divisions: 5,
+                        onChanged: (val) =>
+                            setState(() => _currentNo_cig = val.round())),
+                    TextFormField(
+                      initialValue: userData.food,
+                      decoration:
+                          textInputDecoration.copyWith(hintText: "Food"),
+                      validator: (val) =>
+                          val.isEmpty ? 'Please enter an item' : null,
+                      onChanged: (val) => _currentFood = val,
+                    ),
+                    Slider(
+                        label: _currentQty != null
+                            ? "$_currentQty"
+                            : "${userData.qty_food}",
+                        value: (_currentQty ?? userData.qty_food).toDouble(),
+                        activeColor: Colors.red[_currentQty != null
+                            ? _currentQty * 100
+                            : userData.qty_food * 100],
+                        inactiveColor: Colors.red[_currentQty != null
+                            ? _currentQty * 100
+                            : userData.qty_food * 100],
+                        min: 1.0,
+                        max: 9.0,
+                        divisions: 8,
+                        onChanged: (val) =>
+                            setState(() => _currentQty = val.round())),
+                    RaisedButton(
+                      child: Text("Update"),
+                      color: Colors.greenAccent[100],
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return Loading();
+            }
+          }),
+    );
+  }
+}

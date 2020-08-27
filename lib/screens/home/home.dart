@@ -1,5 +1,6 @@
 import 'package:daily_baithak/models/choices.dart';
 import 'package:daily_baithak/screens/home/choice_list.dart';
+import 'package:daily_baithak/screens/home/settings_form.dart';
 import 'package:daily_baithak/services/auth.dart';
 import 'package:daily_baithak/services/database.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _HomeState extends State<Home> {
           builder: (context) {
             return Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: Text("Bottom Sheet"),
+              child: SettingsForm(),
             );
           });
     }

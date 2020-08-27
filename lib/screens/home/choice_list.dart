@@ -17,11 +17,13 @@ class _ChoiceListState extends State<ChoiceList> {
     // adding .documents gives us all the documents in the firestore collection
 
     // now we're gonna use listbuilder widget which lists out a list tile for each item in the list
-    return ListView.builder(
-        itemCount: choices.length,
-        // index is the index of items in choices list
-        itemBuilder: (context, index) {
-          return ChoiceTile(choice: choices[index]);
-        });
+    if (choices != null) {
+      return ListView.builder(
+          itemCount: choices.length,
+          // index is the index of items in choices list
+          itemBuilder: (context, index) {
+            return ChoiceTile(choice: choices[index]);
+          });
+    }
   }
 }
