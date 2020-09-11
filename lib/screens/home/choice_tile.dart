@@ -43,10 +43,7 @@ class ChoiceTile extends StatelessWidget {
               backgroundColor: Colors.white,
             ),
             title: Text(choice.name),
-            subtitle: choice.no_cig != 0
-                ? Text(
-                    "${choice.no_cig} ${choice.cig} with ${choice.qty_food} plate(s) of ${choice.food}")
-                : Text("${choice.qty_food} plate(s) of ${choice.food}"),
+            subtitle: Text("${choice.qtyFood} plate(s) of ${choice.food}"),
           )),
     );
   }

@@ -13,12 +13,9 @@ class SettingsForm extends StatefulWidget {
 class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> preference = ['chai', 'cold-drink'];
-  final List<String> cig = ['ultra mild', 'goldflake'];
 
   String _currentName;
   String _currentpreference;
-  String _currentCig;
-  int _currentNo_cig;
   String _currentFood;
   int _currentQty;
 
@@ -76,39 +73,6 @@ class _SettingsFormState extends State<SettingsForm> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    DropdownButtonFormField(
-                      value: _currentCig ?? userData.cig,
-                      items: cig.map((String dropDownStringItem) {
-                        return DropdownMenuItem(
-                          value: dropDownStringItem,
-                          child: Text(dropDownStringItem),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _currentCig = val;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Slider(
-                        label: _currentNo_cig != null
-                            ? "$_currentNo_cig"
-                            : "${userData.no_cig}",
-                        value: (_currentNo_cig ?? userData.no_cig).toDouble(),
-                        activeColor: Colors.red[_currentNo_cig != null
-                            ? _currentNo_cig * 100
-                            : userData.no_cig * 100],
-                        inactiveColor: Colors.red[_currentNo_cig != null
-                            ? _currentNo_cig * 100
-                            : userData.no_cig * 100],
-                        min: 0.0,
-                        max: 5.0,
-                        divisions: 5,
-                        onChanged: (val) =>
-                            setState(() => _currentNo_cig = val.round())),
                     TextFormField(
                       initialValue: userData.food,
                       decoration:
@@ -120,14 +84,14 @@ class _SettingsFormState extends State<SettingsForm> {
                     Slider(
                         label: _currentQty != null
                             ? "$_currentQty"
-                            : "${userData.qty_food}",
-                        value: (_currentQty ?? userData.qty_food).toDouble(),
+                            : "${userData.qtyFood}",
+                        value: (_currentQty ?? userData.qtyFood).toDouble(),
                         activeColor: Colors.red[_currentQty != null
                             ? _currentQty * 100
-                            : userData.qty_food * 100],
+                            : userData.qtyFood * 100],
                         inactiveColor: Colors.red[_currentQty != null
                             ? _currentQty * 100
-                            : userData.qty_food * 100],
+                            : userData.qtyFood * 100],
                         min: 1.0,
                         max: 9.0,
                         divisions: 8,
@@ -142,10 +106,8 @@ class _SettingsFormState extends State<SettingsForm> {
                           await DatabaseService(uid: user.uid).updateUserData(
                               _currentName ?? userData.name,
                               _currentpreference ?? userData.preference,
-                              _currentCig ?? userData.cig,
-                              _currentNo_cig ?? userData.no_cig,
                               _currentFood ?? userData.food,
-                              _currentQty ?? userData.qty_food);
+                              _currentQty ?? userData.qtyFood);
                           Navigator.pop(context);
                         }
                       },

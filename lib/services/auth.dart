@@ -57,7 +57,7 @@ class AuthService {
 
       //create new doc for the user with uid... this uses the choicesCollection in database.dart
       await DatabaseService(uid: user.uid).updateUserData(
-          "new user", "chai", "ultra mild", 2, "biryani", 1);
+          "new user", "chai", "biryani", 1);
 
       return _privateUserFromFirebaseUser(user);
     }catch(e){

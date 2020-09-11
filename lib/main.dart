@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Chai Sutta',
+        title: 'Fun Meet',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white60,
           primaryColor: Color(0xff2C2C2C),

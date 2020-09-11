@@ -14,17 +14,14 @@ class DatabaseService {
       Firestore.instance.collection('choices');
 
   // we use it 2 times: first when the user creates a new account, second when he updates the data
-  Future updateUserData(String name, String preference, String cig, int no_cig,
-      String food, int qty_food) async {
+  Future updateUserData(String name, String preference, String food, int qtyFood) async {
     // this returns a new/updated doc when a user registers or updates data
     // setData accepts map
     return await choicesCollection.document(uid).setData({
       'name': name,
       'preference': preference,
-      'cig': cig,
-      'no_cig': no_cig,
       'food': food,
-      'qty_food': qty_food,
+      'qty_food': qtyFood,
     });
   }
 
@@ -35,10 +32,8 @@ class DatabaseService {
       return Choices(
         name: doc.data['name'] ?? '',
         preference: doc.data['preference'] ?? "chai",
-        cig: doc.data['cig'] ?? 'Ultra Mild',
-        no_cig: doc.data['no_cig'] ?? 0,
         food: doc.data['food'] ?? "parantha",
-        qty_food: doc.data['qty_food'] ?? 1,
+        qtyFood: doc.data['qty_food'] ?? 1,
       );
     }).toList();
   }
@@ -57,10 +52,8 @@ class DatabaseService {
       uid: uid,
       name: doc.data['name'],
       preference: doc.data['preference'],
-      cig: doc.data['cig'],
-      no_cig: doc.data['no_cig'],
       food: doc.data['food'],
-      qty_food: doc.data['qty_food'],
+      qtyFood: doc.data['qty_food'],
     );
   }
 
