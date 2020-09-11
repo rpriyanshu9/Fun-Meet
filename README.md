@@ -1,4 +1,4 @@
-# daily_baithak
+# Fun Meet
 
 A flutter utility app for daily meetups of college friends.
 
